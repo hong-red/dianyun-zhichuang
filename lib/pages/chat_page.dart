@@ -10,11 +10,15 @@ import 'story_page.dart';
 class ChatPage extends StatefulWidget {
   final Character character;
   final String apiKey;
+  final int initialAffinity;
+  final bool showBackToMap;
 
   const ChatPage({
     super.key,
     required this.character,
     required this.apiKey,
+    this.initialAffinity = 50,
+    this.showBackToMap = false,
   });
 
   @override
@@ -35,6 +39,7 @@ class _ChatPageState extends State<ChatPage> {
   void initState() {
     super.initState();
     _aiService = AIService(apiKey: widget.apiKey);
+    _affinity = widget.initialAffinity;
     _loadData();
   }
 

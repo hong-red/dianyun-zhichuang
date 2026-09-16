@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'pages/character_select_page.dart';
+import 'pages/splash_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,7 +29,7 @@ class DianyunApp extends StatelessWidget {
         useMaterial3: true,
         fontFamily: 'Default',
       ),
-      home: const CharacterSelectPage(apiKey: defaultApiKey),
+      home: const SplashPage(),
     );
   }
 }
