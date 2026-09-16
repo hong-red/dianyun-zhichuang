@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/character.dart';
 import '../models/story.dart';
 import '../data/stories.dart';
-import '../widgets/character_avatar.dart';
+import '../widgets/animated_character.dart';
 import '../widgets/affinity_bar.dart';
 
 class StoryPage extends StatefulWidget {
@@ -26,6 +26,7 @@ class _StoryPageState extends State<StoryPage> {
   late StoryNode _currentNode;
   late int _affinity;
   bool _isTyping = false;
+  bool _isSpeaking = false;
   String _displayedText = '';
   bool _showChoices = false;
   bool _isEnding = false;
@@ -45,6 +46,7 @@ class _StoryPageState extends State<StoryPage> {
   void _startTyping() {
     setState(() {
       _isTyping = true;
+      _isSpeaking = true;
       _displayedText = '';
       _showChoices = false;
     });
@@ -62,6 +64,7 @@ class _StoryPageState extends State<StoryPage> {
       } else {
         setState(() {
           _isTyping = false;
+          _isSpeaking = false;
           _isEnding = _currentNode.isEnding;
           if (_currentNode.choices.isNotEmpty) {
             _showChoices = true;
@@ -78,6 +81,7 @@ class _StoryPageState extends State<StoryPage> {
       setState(() {
         _displayedText = _currentNode.text;
         _isTyping = false;
+        _isSpeaking = false;
         _isEnding = _currentNode.isEnding;
         if (_currentNode.choices.isNotEmpty) {
           _showChoices = true;
@@ -135,19 +139,11 @@ class _StoryPageState extends State<StoryPage> {
               Expanded(
                 flex: 2,
                 child: Center(
-                  child: widget.character.imagePath != null
-                      ? ClipRRect(
-                          borderRadius: BorderRadius.circular(70),
-                          child: Image.asset(
-                            widget.character.imagePath!,
-                            height: 140,
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) {
-                              return CharacterAvatar(character: widget.character, size: 100);
-                            },
-                          ),
-                        )
-                      : CharacterAvatar(character: widget.character, size: 100),
+                  child: AnimatedCharacter(
+                    character: widget.character,
+                    height: 140,
+                    isSpeaking: _isSpeaking,
+                  ),
                 ),
               ),
 
@@ -218,7 +214,19 @@ class _StoryPageState extends State<StoryPage> {
             if (_currentNode.speaker != '旁白')
               Row(
                 children: [
-                  CharacterAvatar(character: widget.character, size: 28),
+                  CircleAvatar(
+                    radius: 14,
+                    backgroundImage: widget.character.imagePath != null
+                        ? AssetImage(widget.character.imagePath!)
+                        : null,
+                    backgroundColor: primaryColor,
+                    child: widget.character.imagePath == null
+                        ? Text(
+                            widget.character.name.substring(0, 1),
+                            style: const TextStyle(fontSize: 12, color: Colors.white),
+                          )
+                        : null,
+                  ),
                   const SizedBox(width: 8),
                   Text(
                     _currentNode.speaker,

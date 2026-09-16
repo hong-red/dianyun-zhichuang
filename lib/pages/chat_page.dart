@@ -3,7 +3,7 @@ import '../models/character.dart';
 import '../models/chat_message.dart';
 import '../services/ai_service.dart';
 import '../services/storage_service.dart';
-import '../widgets/character_avatar.dart';
+import '../widgets/animated_character.dart';
 import '../widgets/affinity_bar.dart';
 import 'story_page.dart';
 
@@ -28,6 +28,7 @@ class _ChatPageState extends State<ChatPage> {
   final ScrollController _scrollController = ScrollController();
   int _affinity = 50;
   bool _isLoading = false;
+  bool _isSpeaking = false;
   String _currentExpression = 'normal';
 
   @override
@@ -111,11 +112,21 @@ class _ChatPageState extends State<ChatPage> {
       _messages.add(ChatMessage(content: reply, role: MessageRole.assistant));
       _affinity = newAffinity;
       _isLoading = false;
+      _isSpeaking = true;
       _currentExpression = change >= 0 ? 'smile' : 'sad';
     });
     _scrollToBottom();
     _saveHistory();
     StorageService.setAffinity(widget.character.id, newAffinity);
+
+    // 说话动画持续一段时间后停止
+    Future.delayed(const Duration(milliseconds: 1500), () {
+      if (mounted) {
+        setState(() {
+          _isSpeaking = false;
+        });
+      }
+    });
   }
 
   void _scrollToBottom() {
@@ -275,82 +286,80 @@ class _ChatPageState extends State<ChatPage> {
 
   Widget _buildCharacterArea(Color primaryColor) {
     return SizedBox(
-      height: 160,
+      height: 180,
       child: Center(
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 500),
-          curve: Curves.easeInOut,
-          transform: Matrix4.translationValues(
-            0,
-            _isLoading ? -5 : 0,
-            0,
-          ),
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              // 背景光晕
-              Container(
-                width: 140,
-                height: 140,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: primaryColor.withOpacity(0.15),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            AnimatedCharacter(
+              character: widget.character,
+              height: 160,
+              isSpeaking: _isSpeaking,
+              isThinking: _isLoading,
+              onTap: _onCharacterTap,
+            ),
+            // 加载状态标签
+            if (_isLoading)
+              Positioned(
+                bottom: 0,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 8,
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SizedBox(
+                        width: 12,
+                        height: 12,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: primaryColor,
+                        ),
+                      ),
+                      const SizedBox(width: 6),
+                      Text(
+                        '思考中…',
+                        style: TextStyle(fontSize: 11, color: primaryColor),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              // 角色立绘
-              if (widget.character.imagePath != null)
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(60),
-                  child: Image.asset(
-                    widget.character.imagePath!,
-                    height: 150,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return CharacterAvatar(character: widget.character, size: 120);
-                    },
-                  ),
-                )
-              else
-                CharacterAvatar(character: widget.character, size: 120),
-              // 加载指示器
-              if (_isLoading)
-                Positioned(
-                  bottom: 0,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          blurRadius: 8,
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SizedBox(
-                          width: 12,
-                          height: 12,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: primaryColor,
-                          ),
-                        ),
-                        const SizedBox(width: 6),
-                        Text(
-                          '思考中…',
-                          style: TextStyle(fontSize: 11, color: primaryColor),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-            ],
-          ),
+          ],
         ),
+      ),
+    );
+  }
+
+  void _onCharacterTap() {
+    final primaryColor =
+        Color(int.parse('FF${widget.character.primaryColor}', radix: 16));
+    // 点击角色时显示互动气泡
+    List<String> interactions = [
+      '${widget.character.name}微微颔首。',
+      '${widget.character.name}望向了你。',
+      '${widget.character.name}似乎在等待你开口。',
+      '${widget.character.name}轻轻点头。',
+      '${widget.character.name}的目光落在你身上。',
+    ];
+    final random = (interactions..shuffle()).first;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(random),
+        duration: const Duration(seconds: 1),
+        backgroundColor: primaryColor,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
       ),
     );
   }
@@ -382,6 +391,24 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
+  Widget _buildMiniAvatar() {
+    if (widget.character.imagePath != null) {
+      return CircleAvatar(
+        radius: 16,
+        backgroundImage: AssetImage(widget.character.imagePath!),
+      );
+    }
+    return CircleAvatar(
+      radius: 16,
+      backgroundColor:
+          Color(int.parse('FF${widget.character.primaryColor}', radix: 16)),
+      child: Text(
+        widget.character.name.substring(0, 1),
+        style: const TextStyle(fontSize: 14, color: Colors.white),
+      ),
+    );
+  }
+
   Widget _buildMessageBubble(ChatMessage message) {
     bool isUser = message.role == MessageRole.user;
     Color primaryColor = Color(int.parse('FF${widget.character.primaryColor}', radix: 16));
@@ -393,7 +420,7 @@ class _ChatPageState extends State<ChatPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (!isUser) ...[
-            CharacterAvatar(character: widget.character, size: 32),
+            _buildMiniAvatar(),
             const SizedBox(width: 8),
           ],
           Flexible(
