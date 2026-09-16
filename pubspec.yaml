@@ -1,7 +1,7 @@
 name: dianyun_app
 description: 典韵智创 · AI数字人展示版 - 十三经IP数字化展示Demo
 publish_to: 'none'
-version: 1.0.0+1
+version: 1.0.1+2
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -20,3 +20,9 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/images/zhouyi.png
+    - assets/images/shangshu.png
+    - assets/images/shijing.png
+    - assets/images/zhouli.png
+    - assets/images/xiaojing.png

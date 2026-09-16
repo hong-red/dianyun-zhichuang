@@ -135,7 +135,19 @@ class _StoryPageState extends State<StoryPage> {
               Expanded(
                 flex: 2,
                 child: Center(
-                  child: CharacterAvatar(character: widget.character, size: 100),
+                  child: widget.character.imagePath != null
+                      ? ClipRRect(
+                          borderRadius: BorderRadius.circular(70),
+                          child: Image.asset(
+                            widget.character.imagePath!,
+                            height: 140,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return CharacterAvatar(character: widget.character, size: 100);
+                            },
+                          ),
+                        )
+                      : CharacterAvatar(character: widget.character, size: 100),
                 ),
               ),
 

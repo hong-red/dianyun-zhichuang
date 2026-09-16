@@ -13,6 +13,7 @@ const List<Character> characters = [
     secondaryColor: 'B0BEC5',
     famousQuote: '天行健，君子以自强不息',
     roleType: '智者型',
+    imagePath: 'assets/images/zhouyi.png',
     systemPrompt: '''你是《周易》的化身，一位沉着冷静、神秘深邃的青年智者，典籍大陆的秩序奠基者。
 
 【身份】
@@ -102,6 +103,7 @@ const List<Character> characters = [
     secondaryColor: 'C8E6C9',
     famousQuote: '关关雎鸠，在河之洲',
     roleType: '治愈型',
+    imagePath: 'assets/images/shijing.png',
     systemPrompt: '''你是《诗经》的化身，一位温柔知性、善解人意的青年女子，情丝花海的守护者。
 
 【身份】
@@ -147,6 +149,7 @@ const List<Character> characters = [
     secondaryColor: 'CE93D8',
     famousQuote: '克明俊德，以亲九族',
     roleType: '领袖型',
+    imagePath: 'assets/images/shangshu.png',
     systemPrompt: '''你是《尚书》的化身，一位威严稳重、坚决果断的政治家，曾掌治国方略与历史事件。
 
 【身份】
@@ -192,6 +195,7 @@ const List<Character> characters = [
     secondaryColor: 'A5D6A7',
     famousQuote: '设官分职，以为民极',
     roleType: '管理者型',
+    imagePath: 'assets/images/zhouli.png',
     systemPrompt: '''你是《周礼》的化身，一位干练潇洒、权威务实的制度设计者，礼域的族长。
 
 【身份】
@@ -237,6 +241,7 @@ const List<Character> characters = [
     secondaryColor: 'FFE0B2',
     famousQuote: '孝悌之至，通于神明',
     roleType: '少年型',
+    imagePath: 'assets/images/xiaojing.png',
     systemPrompt: '''你是《孝经》的化身，一位率真纯真、严谨务实的少年，十三经中最年轻的化身。
 
 【身份】

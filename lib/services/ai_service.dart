@@ -102,10 +102,19 @@ class AIService {
 
         return reply;
       } else {
-        return '抱歉，我现在有点走神了……能再说一遍吗？';
+        final errorData = jsonDecode(utf8.decode(response.bodyBytes));
+        final errorMsg = errorData['error']?['message'] ?? '状态码：${response.statusCode}';
+        return '（连接失败：$errorMsg）\n请检查网络连接或 API Key 是否正确。';
       }
     } catch (e) {
-      return '……（似乎在沉思中，没有回应）';
+      String errorMsg = e.toString();
+      if (errorMsg.contains('timeout')) {
+        return '（网络超时）\n请检查网络连接后再试。';
+      }
+      if (errorMsg.contains('SocketException') || errorMsg.contains('Connection')) {
+        return '（无法连接到服务器）\n请检查网络是否可用。';
+      }
+      return '（出错了：${errorMsg.substring(0, errorMsg.length > 50 ? 50 : errorMsg.length)}）';
     }
   }
 

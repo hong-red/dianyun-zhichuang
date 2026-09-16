@@ -275,7 +275,7 @@ class _ChatPageState extends State<ChatPage> {
 
   Widget _buildCharacterArea(Color primaryColor) {
     return SizedBox(
-      height: 120,
+      height: 160,
       child: Center(
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 500),
@@ -290,14 +290,28 @@ class _ChatPageState extends State<ChatPage> {
             children: [
               // 背景光晕
               Container(
-                width: 100,
-                height: 100,
+                width: 140,
+                height: 140,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: primaryColor.withOpacity(0.1),
+                  color: primaryColor.withOpacity(0.15),
                 ),
               ),
-              CharacterAvatar(character: widget.character, size: 90),
+              // 角色立绘
+              if (widget.character.imagePath != null)
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(60),
+                  child: Image.asset(
+                    widget.character.imagePath!,
+                    height: 150,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return CharacterAvatar(character: widget.character, size: 120);
+                    },
+                  ),
+                )
+              else
+                CharacterAvatar(character: widget.character, size: 120),
               // 加载指示器
               if (_isLoading)
                 Positioned(

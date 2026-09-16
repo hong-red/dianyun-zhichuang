@@ -41,23 +41,19 @@ class CharacterAvatar extends StatelessWidget {
               ),
             ],
           ),
-          child: Center(
-            child: Text(
-              character.name.substring(0, 1),
-              style: TextStyle(
-                fontSize: size * 0.4,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-                shadows: const [
-                  Shadow(
-                    color: Colors.black26,
-                    blurRadius: 2,
-                    offset: Offset(1, 1),
+          child: character.imagePath != null
+              ? ClipOval(
+                  child: Image.asset(
+                    character.imagePath!,
+                    fit: BoxFit.cover,
+                    width: size,
+                    height: size,
+                    errorBuilder: (context, error, stackTrace) {
+                      return _buildTextAvatar(primaryColor, size);
+                    },
                   ),
-                ],
-              ),
-            ),
-          ),
+                )
+              : _buildTextAvatar(primaryColor, size),
         ),
         if (showName) ...[
           const SizedBox(height: 8),
@@ -71,6 +67,26 @@ class CharacterAvatar extends StatelessWidget {
           ),
         ],
       ],
+    );
+  }
+
+  Widget _buildTextAvatar(Color primaryColor, double size) {
+    return Center(
+      child: Text(
+        character.name.substring(0, 1),
+        style: TextStyle(
+          fontSize: size * 0.4,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+          shadows: const [
+            Shadow(
+              color: Colors.black26,
+              blurRadius: 2,
+              offset: Offset(1, 1),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

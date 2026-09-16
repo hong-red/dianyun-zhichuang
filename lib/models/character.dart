@@ -11,6 +11,7 @@ class Character {
   final String systemPrompt;
   final String famousQuote;
   final String roleType;
+  final String? imagePath;
 
   const Character({
     required this.id,
@@ -25,5 +26,6 @@ class Character {
     required this.systemPrompt,
     required this.famousQuote,
     required this.roleType,
+    this.imagePath,
   });
 }
