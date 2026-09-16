@@ -149,47 +149,44 @@ class _AnimatedCharacterState extends State<AnimatedCharacter>
         child: Stack(
           alignment: Alignment.center,
           children: [
-            // 背景光晕
+            // 背景光晕（柔和扩散）
             Container(
-              width: widget.height * 0.9,
-              height: widget.height * 0.9,
+              width: widget.height * 1.1,
+              height: widget.height * 1.1,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: primaryColor.withOpacity(0.15),
+                color: primaryColor.withOpacity(0.1),
                 boxShadow: [
                   BoxShadow(
-                    color: primaryColor.withOpacity(0.2),
-                    blurRadius: 30,
-                    spreadRadius: 5,
+                    color: primaryColor.withOpacity(0.15),
+                    blurRadius: 40,
+                    spreadRadius: 10,
                   ),
                 ],
               ),
             ),
-            // 角色立绘
+            // 角色立绘（完整显示，无圆形裁剪）
             if (widget.character.imagePath != null)
-              ClipRRect(
-                borderRadius: BorderRadius.circular(widget.height * 0.4),
-                child: Image.asset(
-                  widget.character.imagePath!,
-                  height: widget.height,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return _buildFallbackAvatar(primaryColor);
-                  },
-                ),
+              Image.asset(
+                widget.character.imagePath!,
+                height: widget.height,
+                fit: BoxFit.contain,
+                errorBuilder: (context, error, stackTrace) {
+                  return _buildFallbackAvatar(primaryColor);
+                },
               )
             else
               _buildFallbackAvatar(primaryColor),
             // 点击波纹效果
             if (_isTapped)
-              Positioned.fill(
-                child: Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: primaryColor.withOpacity(0.5),
-                      width: 3,
-                    ),
+              Container(
+                width: widget.height * 0.8,
+                height: widget.height * 0.8,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: primaryColor.withOpacity(0.6),
+                    width: 3,
                   ),
                 ),
               ),

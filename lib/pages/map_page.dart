@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../data/characters.dart';
 import '../models/character.dart';
 import 'chat_page.dart';
+import 'story_page.dart';
 import '../services/storage_service.dart';
 
 /// 典籍大陆地图页
@@ -19,6 +20,7 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
 
   final List<FloatingParticle> _particles = [];
   final Random _random = Random();
+  final Map<String, bool> _clearedStatus = {};
 
   @override
   void initState() {
@@ -43,6 +45,20 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
         size: 2 + _random.nextDouble() * 3,
       ));
     }
+
+    // 加载通关状态
+    _loadClearedStatus();
+  }
+
+  Future<void> _loadClearedStatus() async {
+    for (var char in characters) {
+      bool cleared = await StorageService.isStoryCleared(char.id);
+      if (mounted) {
+        setState(() {
+          _clearedStatus[char.id] = cleared;
+        });
+      }
+    }
   }
 
   @override
@@ -53,15 +69,30 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
   }
 
   void _enterCharacter(Character character) async {
+    bool isCleared = await StorageService.isStoryCleared(character.id);
     int affinity = await StorageService.getAffinity(character.id);
 
     if (!mounted) return;
+
+    if (!isCleared) {
+      // 未通关：直接进入剧情
+      _startStory(character, affinity);
+    } else {
+      // 已通关：弹出选项
+      _showCharacterMenu(character, affinity);
+    }
+  }
+
+  void _startStory(Character character, int affinity) {
     Navigator.of(context).push(
       PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => ChatPage(
+        pageBuilder: (context, animation, secondaryAnimation) => StoryPage(
           character: character,
-          apiKey: 'sk-9f4bf5c1920b46c49e528a768f9240fa',
           initialAffinity: affinity,
+          onStoryComplete: (newAffinity) {
+            // 剧情结束后刷新地图状态
+            setState(() {});
+          },
         ),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return FadeTransition(
@@ -69,7 +100,100 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
             child: child,
           );
         },
-        transitionDuration: const Duration(milliseconds: 600),
+        transitionDuration: const Duration(milliseconds: 500),
+      ),
+    );
+  }
+
+  void _startChat(Character character, int affinity) {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) => ChatPage(
+          character: character,
+          apiKey: 'sk-9f4bf5c1920b46c49e528a768f9240fa',
+          initialAffinity: affinity,
+          showBackToMap: true,
+        ),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(
+            opacity: animation,
+            child: child,
+          );
+        },
+        transitionDuration: const Duration(milliseconds: 500),
+      ),
+    );
+  }
+
+  void _showCharacterMenu(Character character, int affinity) {
+    Color primaryColor =
+        Color(int.parse('FF${character.primaryColor}', radix: 16));
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) => Container(
+        padding: const EdgeInsets.all(20),
+        decoration: const BoxDecoration(
+          color: Color(0xFF1a2030),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // 角色名
+            Text(
+              character.name,
+              style: TextStyle(
+                color: primaryColor,
+                fontSize: 22,
+                letterSpacing: 4,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              character.roleType,
+              style: const TextStyle(
+                color: Colors.white60,
+                fontSize: 12,
+              ),
+            ),
+            const SizedBox(height: 20),
+            // 继续剧情
+            ListTile(
+              leading: Icon(Icons.menu_book, color: primaryColor),
+              title: const Text(
+                '继续剧情',
+                style: TextStyle(color: Colors.white),
+              ),
+              subtitle: const Text(
+                '重温故事',
+                style: TextStyle(color: Colors.white54, fontSize: 12),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                _startStory(character, affinity);
+              },
+            ),
+            // 闲谈
+            ListTile(
+              leading: Icon(Icons.chat_bubble_outline, color: primaryColor),
+              title: const Text(
+                '闲谈',
+                style: TextStyle(color: Colors.white),
+              ),
+              subtitle: const Text(
+                '自由对话',
+                style: TextStyle(color: Colors.white54, fontSize: 12),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                _startChat(character, affinity);
+              },
+            ),
+            const SizedBox(height: 10),
+          ],
+        ),
       ),
     );
   }
@@ -268,6 +392,7 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
   }) {
     Color primaryColor =
         Color(int.parse('FF${character.primaryColor}', radix: 16));
+    bool isCleared = _clearedStatus[character.id] ?? false;
 
     return Positioned(
       left: left * MediaQuery.of(context).size.width - 35,
@@ -276,6 +401,7 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
         character: character,
         primaryColor: primaryColor,
         icon: icon,
+        isCleared: isCleared,
         onTap: () => _enterCharacter(character),
       ),
     );
@@ -286,12 +412,14 @@ class _MapNodeWidget extends StatefulWidget {
   final Character character;
   final Color primaryColor;
   final String icon;
+  final bool isCleared;
   final VoidCallback onTap;
 
   const _MapNodeWidget({
     required this.character,
     required this.primaryColor,
     required this.icon,
+    required this.isCleared,
     required this.onTap,
   });
 
@@ -346,10 +474,15 @@ class _MapNodeWidgetState extends State<_MapNodeWidget>
                     height: 70,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: widget.primaryColor,
+                      color: widget.isCleared
+                          ? widget.primaryColor
+                          : Colors.grey.shade700,
                       boxShadow: [
                         BoxShadow(
-                          color: widget.primaryColor.withOpacity(0.5),
+                          color: (widget.isCleared
+                                  ? widget.primaryColor
+                                  : Colors.grey)
+                              .withOpacity(widget.isCleared ? 0.5 : 0.3),
                           blurRadius: 15,
                           spreadRadius: 2,
                         ),
@@ -360,16 +493,64 @@ class _MapNodeWidgetState extends State<_MapNodeWidget>
                       children: [
                         Text(
                           widget.icon,
-                          style: const TextStyle(fontSize: 28),
+                          style: TextStyle(
+                            fontSize: 28,
+                            color: widget.isCleared
+                                ? null
+                                : Colors.white.withOpacity(0.5),
+                          ),
                         ),
+                        // 未通关：锁图标
+                        if (!widget.isCleared)
+                          Positioned(
+                            right: 2,
+                            bottom: 2,
+                            child: Container(
+                              width: 22,
+                              height: 22,
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade600,
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: Colors.grey.shade500,
+                                  width: 1,
+                                ),
+                              ),
+                              child: const Icon(
+                                Icons.lock,
+                                size: 12,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        // 已通关：星星标记
+                        if (widget.isCleared)
+                          Positioned(
+                            right: 0,
+                            bottom: 0,
+                            child: Container(
+                              padding: const EdgeInsets.all(2),
+                              decoration: const BoxDecoration(
+                                color: Color(0xFFFFD700),
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(
+                                Icons.star,
+                                size: 14,
+                                color: Color(0xFF8B6914),
+                              ),
+                            ),
+                          ),
                         // 外圈光晕
                         Positioned.fill(
                           child: Container(
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               border: Border.all(
-                                color:
-                                    widget.primaryColor.withOpacity(0.5),
+                                color: (widget.isCleared
+                                        ? widget.primaryColor
+                                        : Colors.grey)
+                                    .withOpacity(0.5),
                                 width: 2,
                               ),
                             ),

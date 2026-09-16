@@ -4,6 +4,8 @@ import '../models/story.dart';
 import '../data/stories.dart';
 import '../widgets/animated_character.dart';
 import '../widgets/affinity_bar.dart';
+import '../services/storage_service.dart';
+import 'chat_page.dart';
 
 class StoryPage extends StatefulWidget {
   final Character character;
@@ -102,8 +104,37 @@ class _StoryPageState extends State<StoryPage> {
   }
 
   void _finishStory() {
+    // 标记通关 + 解锁闲谈
+    StorageService.setStoryCleared(widget.character.id);
+    StorageService.unlockChat(widget.character.id);
     widget.onStoryComplete(_affinity);
     Navigator.pop(context);
+  }
+
+  void _goToChat() {
+    // 标记通关 + 解锁闲谈
+    StorageService.setStoryCleared(widget.character.id);
+    StorageService.unlockChat(widget.character.id);
+    widget.onStoryComplete(_affinity);
+
+    // 跳转到闲谈页（替换当前页面）
+    Navigator.of(context).pushReplacement(
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) => ChatPage(
+          character: widget.character,
+          apiKey: 'sk-9f4bf5c1920b46c49e528a768f9240fa',
+          initialAffinity: _affinity,
+          showBackToMap: true,
+        ),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(
+            opacity: animation,
+            child: child,
+          );
+        },
+        transitionDuration: const Duration(milliseconds: 500),
+      ),
+    );
   }
 
   @override
@@ -397,10 +428,11 @@ class _StoryPageState extends State<StoryPage> {
           ),
         ),
         const SizedBox(height: 16),
+        // 进入闲谈按钮
         SizedBox(
           width: double.infinity,
           child: ElevatedButton(
-            onPressed: _finishStory,
+            onPressed: _goToChat,
             style: ElevatedButton.styleFrom(
               backgroundColor: primaryColor,
               foregroundColor: Colors.white,
@@ -409,7 +441,38 @@ class _StoryPageState extends State<StoryPage> {
                 borderRadius: BorderRadius.circular(12),
               ),
             ),
-            child: const Text('返回对话'),
+            child: const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.chat_bubble_outline, size: 18),
+                SizedBox(width: 8),
+                Text('进入闲谈'),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        // 返回地图按钮
+        SizedBox(
+          width: double.infinity,
+          child: OutlinedButton(
+            onPressed: _finishStory,
+            style: OutlinedButton.styleFrom(
+              foregroundColor: primaryColor,
+              side: BorderSide(color: primaryColor, width: 1.5),
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+            child: const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.map_outlined, size: 18),
+                SizedBox(width: 8),
+                Text('返回地图'),
+              ],
+            ),
           ),
         ),
       ],

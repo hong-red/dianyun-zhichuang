@@ -6,6 +6,8 @@ class StorageService {
   static const String _keyAffinityPrefix = 'affinity_';
   static const String _keyChatHistoryPrefix = 'chat_history_';
   static const String _keyStoryProgressPrefix = 'story_progress_';
+  static const String _keyStoryClearedPrefix = 'story_cleared_';
+  static const String _keyChatUnlockedPrefix = 'chat_unlocked_';
   static const String _keyLastCharacter = 'last_character';
 
   // 获取好感度
@@ -63,6 +65,30 @@ class StorageService {
   static Future<void> saveStoryProgress(String characterId, String nodeId) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('$_keyStoryProgressPrefix$characterId', nodeId);
+  }
+
+  // 剧情是否已通关
+  static Future<bool> isStoryCleared(String characterId) async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('$_keyStoryClearedPrefix$characterId') ?? false;
+  }
+
+  // 标记剧情通关
+  static Future<void> setStoryCleared(String characterId) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('$_keyStoryClearedPrefix$characterId', true);
+  }
+
+  // 闲谈是否已解锁
+  static Future<bool> isChatUnlocked(String characterId) async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('$_keyChatUnlockedPrefix$characterId') ?? false;
+  }
+
+  // 解锁闲谈
+  static Future<void> unlockChat(String characterId) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('$_keyChatUnlockedPrefix$characterId', true);
   }
 
   // 获取上次选择的角色
