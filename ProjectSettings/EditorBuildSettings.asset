@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: ea436e10694effb42b71f34c454f1bff
+  - enabled: 1
+    path: Assets/Scenes/WorldMap.unity
+    guid: 447db7234d9ad664883e784519343eee
+  - enabled: 1
+    path: Assets/Scenes/ZhouyiLevel.unity
+    guid: 29ab7896c261d5c45b14bc84284f69fc
+  - enabled: 1
+    path: Assets/Scenes/ShangshuLevel.unity
+    guid: 14c7725812d8b954191a45c7277525a3
+  - enabled: 1
+    path: Assets/Scenes/ShijingLevel.unity
+    guid: 0283d11b05440d749b22aef3f36cf81d
+  - enabled: 1
+    path: Assets/Scenes/ZhouliLevel.unity
+    guid: 7ae12b2a239f92442b59d55b3051b642
+  - enabled: 1
+    path: Assets/Scenes/YiliLevel.unity
+    guid: 1f2182846265ab24faf80c73df433e2c
+  - enabled: 1
+    path: Assets/Scenes/LijiLevel.unity
+    guid: 65880c839dd721441b3cd0b2aaa10470
+  - enabled: 1
+    path: Assets/Scenes/ZuozhuanLevel.unity
+    guid: 54c2c095219ad264181237b678c091f7
+  - enabled: 1
+    path: Assets/Scenes/GongyangLevel.unity
+    guid: 9875cf76c81925540b26ca5c4949621f
+  - enabled: 1
+    path: Assets/Scenes/GuliangLevel.unity
+    guid: 2cad4e110b5acef4492865108308d78d
+  - enabled: 1
+    path: Assets/Scenes/LunyuLevel.unity
+    guid: c2cf114ac65f44b42ae77b64e120ebc1
+  - enabled: 1
+    path: Assets/Scenes/XiaojingLevel.unity
+    guid: 140e16965df079c4ba60b3c3e5d1269e
+  - enabled: 1
+    path: Assets/Scenes/EryaLevel.unity
+    guid: bfd74c39a21749143b2b578f1b3eb84c
+  - enabled: 1
+    path: Assets/Scenes/MengziLevel.unity
+    guid: 956a790b676c4f84c9010160df514db2
+  - enabled: 1
+    path: Assets/Scenes/Ending.unity
+    guid: a996ce7b921ba4a48857ce6795670c3e
+  m_configObjects: {}

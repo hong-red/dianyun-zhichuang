@@ -1,48 +1,65 @@
-# Miscellaneous
-*.class
-*.log
-*.pyc
-*.swp
-.DS_Store
-.atom/
-.build/
-.buildlog/
-.history
-.svn/
-.swiftpm/
-migrate_working_dir/
+﻿# =========================================================
+#  Unity (十三经 IP 游戏) —— 忽略构建缓存与本地文件
+# =========================================================
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+/[Mm]emoryCaptures/
+/[Rr]ecordings/
 
-# IntelliJ related
-*.iml
-*.ipr
-*.iws
+# 本地打包 / 发布产物
+/_build/
+/发布/
+*.7z
+*.zip
+
+# Visual Studio / Rider / VS Code 工程文件
+.vs/
 .idea/
+.vscode/
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
 
-# The .vscode folder contains launch configuration and tasks you configure in
-# VS Code which you may wish to be included in version control, so this line
-# is commented out by default.
-#.vscode/
+# Unity 自动生成的资源元数据缓存
+sysinfo.txt
+*.apk
+*.aab
+*.unitypackage
+crashlytics-build.properties
 
-# Flutter/Dart/Pub related
-**/doc/api/
-**/ios/Flutter/.last_build_id
-.dart_tool/
-.flutter-plugins-dependencies
-.pub-cache/
-.pub/
-/build/
-/coverage/
+# 操作系统杂项
+.DS_Store
+Thumbs.db
+desktop.ini
 
-# Symbolication related
-app.*.symbols
+# =========================================================
+#  内置 AI 服务器 (Open-LLM-VTuber) —— 运行期产物
+# =========================================================
+/server/.venv/
+/server/cache/
+/server/chat_history/
+/server/logs/
+/server/models/
+/server/runtime/
+/server/**/__pycache__/
+*.pyc
 
-# Obfuscation related
-app.*.map.json
-
-# Android Studio will place build artifacts here
-/android/app/debug
-/android/app/profile
-/android/app/release
-
-# Widget Preview related
-.widget_preview/
+# 不要提交真实密钥：conf.yaml 已用空占位提交，个人本地配置请用本地覆盖
+/server/conf.yaml.bak
+/server/conf.yaml.backup
+/server/conf.yaml.old

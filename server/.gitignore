@@ -1,0 +1,41 @@
+﻿# =========================================================
+#  内置 AI 服务器 (Open-LLM-VTuber) —— 随游戏一起分发的本地服务
+#  本仓库保留本游戏用到的角色 / 头像 / 背景 / Live2D 资源，
+#  仅忽略运行期产物与本地密钥文件。
+# =========================================================
+
+# 运行期产物
+__pycache__/
+*.pyc
+logs/
+cache/
+chat_history/
+runtime/
+.vscode/
+.idea/
+.DS_Store
+tmp/
+private/
+
+# 虚拟环境
+.venv/
+.conda/
+conda/
+
+# 大体积运行模型（请按需单独下载，不随仓库分发）
+models/
+
+# 敏感数据：不要提交真实密钥
+.env
+api_keys.py
+conf.yaml.bak
+conf.yaml.backup
+conf.yaml.old
+conf.yaml.backup
+src/open_llm_vtuber/llm/user_credentials.json
+mcp_servers.json
+
+# 其他
+*.exe
+memory.db
+mem.json

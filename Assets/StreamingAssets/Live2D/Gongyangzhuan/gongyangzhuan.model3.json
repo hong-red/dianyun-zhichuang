@@ -1,0 +1,27 @@
+{
+	"Version": 3,
+	"FileReferences": {
+		"Moc": "gongyangzhuan.moc3",
+		"Textures": [
+			"gongyangzhuan.1024/texture_00.png"
+		],
+		"DisplayInfo": "gongyangzhuan.cdi3.json"
+	},
+	"Groups": [
+		{
+			"Target": "Parameter",
+			"Name": "EyeBlink",
+			"Ids": [
+				"ParamEyeLOpen",
+				"ParamEyeROpen"
+			]
+		},
+		{
+			"Target": "Parameter",
+			"Name": "LipSync",
+			"Ids": [
+				"ParamMouthOpenY"
+			]
+		}
+	]
+}

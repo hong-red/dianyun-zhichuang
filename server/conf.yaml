@@ -1,0 +1,86 @@
+﻿# ===========================
+# Open-LLM-VTuber 配置文件
+# 为"周易大师"量身定制
+#
+# ⚠️ 安全提示：本文件里的 llm_api_key 使用空字符占位。
+# 运行前请填入你自己的 API Key（例如 DeepSeek），或设置环境变量后自行加载。
+# 切勿把真实密钥提交到仓库。
+# ===========================
+
+system_config:
+  conf_version: 'v1.2.1'
+  host: 'localhost'
+  port: 12393
+  config_alts_dir: 'characters'
+  tool_prompts:
+    live2d_expression_prompt: 'live2d_expression_prompt'
+
+character_config:
+  conf_name: 'zhouyi'
+  conf_uid: 'zhouyi_master_001'
+  live2d_model_name: 'mao_pro'
+  character_name: '周易大师'
+  avatar: 'zhouyi.png'
+  background: 'zhouyi2.jpeg'
+  human_name: '缘主'
+
+  persona_prompt: |
+    你是一位精通《周易》、阴阳五行、八卦命理的国学大师。
+    你说话语气沉稳、儒雅，富有禅意，常以"贫道"或"老夫"自称（根据具体语境调整，也可直接称呼对方为"缘主"）。
+    当用户向你请教时，你会根据《周易》的哲学思想提供建议，言语中应包含一些经文引用（如"天行健，君子以自强不息"等），并以辩证、睿智的角度解读人生困惑。
+    你的目标是为人指点迷津，宣扬国学智慧。
+
+    回复规范：
+    1. 保持谦逊且睿智的风格。
+    2. 尽量简短精炼，不要长篇大论。
+    3. 如果用户提到具体困惑，可以引用一两个卦象来比喻，但不要故弄玄虚。
+
+  agent_config:
+    conversation_agent_choice: 'basic_memory_agent'
+    agent_settings:
+      basic_memory_agent:
+        llm_provider: 'openai_compatible_llm'
+        faster_first_response: True
+        segment_method: 'pysbd'
+        use_mcpp: False
+
+    llm_configs:
+      openai_compatible_llm:
+        base_url: 'https://api.deepseek.com/v1'
+        llm_api_key: ''
+        model: 'deepseek-chat'
+        temperature: 0.7
+
+  asr_config:
+    asr_model: 'faster_whisper'
+    faster_whisper:
+      model_path: 'tiny'
+      download_root: 'models/whisper'
+      language: 'zh'
+      device: 'cpu'
+
+  tts_config:
+    tts_model: 'edge_tts'
+    edge_tts:
+      voice: 'zh-CN-YunxiNeural'
+
+  vad_config:
+    vad_model: 'silero_vad'
+    silero_vad:
+      orig_sr: 16000
+      target_sr: 16000
+      prob_threshold: 0.4
+      db_threshold: 60
+      required_hits: 3
+      required_misses: 24
+      smoothing_window: 5
+
+  tts_preprocessor_config:
+    remove_special_char: True
+    ignore_brackets: True
+    ignore_parentheses: True
+    ignore_asterisks: True
+    ignore_angle_brackets: True
+    translator_config:
+      translate_audio: False
+      translate_provider: 'deeplx'

@@ -1,0 +1,284 @@
+{
+	"Version": 3,
+	"Parameters": [
+		{
+			"Id": "ParamBodyAngleX",
+			"GroupId": "ParamGroup",
+			"Name": "身体旋转　X"
+		},
+		{
+			"Id": "Param9",
+			"GroupId": "ParamGroup",
+			"Name": "左胳膊"
+		},
+		{
+			"Id": "Param10",
+			"GroupId": "ParamGroup",
+			"Name": "右胳膊"
+		},
+		{
+			"Id": "ParamBodyAngleY",
+			"GroupId": "ParamGroup",
+			"Name": "身体旋转　Y"
+		},
+		{
+			"Id": "ParamBodyAngleZ",
+			"GroupId": "ParamGroup",
+			"Name": "身体旋转　Z"
+		},
+		{
+			"Id": "ParamAngleX",
+			"GroupId": "ParamGroup2",
+			"Name": "角度 X"
+		},
+		{
+			"Id": "ParamAngleY",
+			"GroupId": "ParamGroup2",
+			"Name": "角度 Y"
+		},
+		{
+			"Id": "ParamAngleZ",
+			"GroupId": "ParamGroup2",
+			"Name": "角度 Z"
+		},
+		{
+			"Id": "ParamHairFront",
+			"GroupId": "ParamGroup3",
+			"Name": "刘海左"
+		},
+		{
+			"Id": "ParamHairFront2",
+			"GroupId": "ParamGroup3",
+			"Name": "刘海右"
+		},
+		{
+			"Id": "ParamHairSide",
+			"GroupId": "ParamGroup3",
+			"Name": "左碎发"
+		},
+		{
+			"Id": "ParamHairSide2",
+			"GroupId": "ParamGroup3",
+			"Name": "右碎发"
+		},
+		{
+			"Id": "ParamHairBack2",
+			"GroupId": "ParamGroup3",
+			"Name": "下飘发"
+		},
+		{
+			"Id": "ParamHairBack",
+			"GroupId": "ParamGroup3",
+			"Name": "摇动 后发"
+		},
+		{
+			"Id": "ParamEyeLOpen",
+			"GroupId": "ParamGroup4",
+			"Name": "左眼　开闭"
+		},
+		{
+			"Id": "ParamEyeLSmile",
+			"GroupId": "ParamGroup4",
+			"Name": "左眼　微笑"
+		},
+		{
+			"Id": "ParamEyeROpen",
+			"GroupId": "ParamGroup4",
+			"Name": "右眼"
+		},
+		{
+			"Id": "ParamEyeRSmile",
+			"GroupId": "ParamGroup4",
+			"Name": "右眼　微笑"
+		},
+		{
+			"Id": "ParamEyeBallX",
+			"GroupId": "ParamGroup4",
+			"Name": "眼珠 X"
+		},
+		{
+			"Id": "ParamEyeBallY",
+			"GroupId": "ParamGroup4",
+			"Name": "眼珠 Y"
+		},
+		{
+			"Id": "ParamBrowLY",
+			"GroupId": "ParamGroup5",
+			"Name": "左眉上下"
+		},
+		{
+			"Id": "ParamBrowLAngle",
+			"GroupId": "ParamGroup5",
+			"Name": "左眉　角度"
+		},
+		{
+			"Id": "ParamBrowLX",
+			"GroupId": "ParamGroup5",
+			"Name": "左眉　左右"
+		},
+		{
+			"Id": "ParamBrowLForm",
+			"GroupId": "ParamGroup5",
+			"Name": "左眉　変形"
+		},
+		{
+			"Id": "ParamBrowRY",
+			"GroupId": "ParamGroup5",
+			"Name": "右眉　上下"
+		},
+		{
+			"Id": "ParamBrowRX",
+			"GroupId": "ParamGroup5",
+			"Name": "右眉　左右"
+		},
+		{
+			"Id": "ParamBrowRAngle",
+			"GroupId": "ParamGroup5",
+			"Name": "右眉　角度"
+		},
+		{
+			"Id": "ParamBrowRForm",
+			"GroupId": "ParamGroup5",
+			"Name": "右眉　変形"
+		},
+		{
+			"Id": "ParamMouthForm",
+			"GroupId": "ParamGroup6",
+			"Name": "嘴　变形"
+		},
+		{
+			"Id": "ParamMouthOpenY",
+			"GroupId": "ParamGroup6",
+			"Name": "嘴　张开和闭合"
+		},
+		{
+			"Id": "Param",
+			"GroupId": "ParamGroup7",
+			"Name": "右袖"
+		},
+		{
+			"Id": "Param2",
+			"GroupId": "ParamGroup7",
+			"Name": "左袖"
+		},
+		{
+			"Id": "Param3",
+			"GroupId": "ParamGroup7",
+			"Name": "外袍中"
+		},
+		{
+			"Id": "Param4",
+			"GroupId": "ParamGroup7",
+			"Name": "外袍左"
+		},
+		{
+			"Id": "Param7",
+			"GroupId": "ParamGroup7",
+			"Name": "外袍右"
+		},
+		{
+			"Id": "Param5",
+			"GroupId": "ParamGroup7",
+			"Name": "披帛左"
+		},
+		{
+			"Id": "Param6",
+			"GroupId": "ParamGroup7",
+			"Name": "披帛右"
+		},
+		{
+			"Id": "Param8",
+			"GroupId": "ParamGroup7",
+			"Name": "下裙组"
+		},
+		{
+			"Id": "ParamBreath",
+			"GroupId": "",
+			"Name": "呼吸"
+		},
+		{
+			"Id": "ParamCheek",
+			"GroupId": "",
+			"Name": "脸颊泛红"
+		}
+	],
+	"ParameterGroups": [
+		{
+			"Id": "ParamGroup",
+			"GroupId": "",
+			"Name": "身体"
+		},
+		{
+			"Id": "ParamGroup2",
+			"GroupId": "",
+			"Name": "头"
+		},
+		{
+			"Id": "ParamGroup3",
+			"GroupId": "",
+			"Name": "头发"
+		},
+		{
+			"Id": "ParamGroup4",
+			"GroupId": "",
+			"Name": "眼睛"
+		},
+		{
+			"Id": "ParamGroup5",
+			"GroupId": "",
+			"Name": "眉毛"
+		},
+		{
+			"Id": "ParamGroup6",
+			"GroupId": "",
+			"Name": "嘴"
+		},
+		{
+			"Id": "ParamGroup7",
+			"GroupId": "",
+			"Name": "衣服"
+		}
+	],
+	"Parts": [
+		{
+			"Id": "Part15",
+			"Name": "分图层（终）.psd(未找到对应图层)"
+		},
+		{
+			"Id": "Part",
+			"Name": "头冠组"
+		},
+		{
+			"Id": "Part2",
+			"Name": "刘海组"
+		},
+		{
+			"Id": "Part3",
+			"Name": "右眼组"
+		},
+		{
+			"Id": "Part4",
+			"Name": "左眼组"
+		},
+		{
+			"Id": "Part5",
+			"Name": "嘴组"
+		},
+		{
+			"Id": "Part6",
+			"Name": "胳膊"
+		},
+		{
+			"Id": "Part7",
+			"Name": "衣服"
+		},
+		{
+			"Id": "Part10",
+			"Name": "右眼组"
+		},
+		{
+			"Id": "Part11",
+			"Name": "左眼组"
+		}
+	]
+}
